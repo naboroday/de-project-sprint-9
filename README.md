@@ -1,13 +1,31 @@
-# Проект 9-го спринта
+# Helm-чарт для установки приложения в Kubernetes
 
-### Как работать с репозиторием
-1. В вашем GitHub-аккаунте автоматически создастся репозиторий `de-project-sprint-9` после того, как вы привяжете свой GitHub-аккаунт на Платформе.
-2. Скопируйте репозиторий на свой компьютер. В качестве пароля укажите ваш `Access Token`, который нужно получить на странице [Personal Access Tokens](https://github.com/settings/tokens)):
-	* `git clone https://github.com/{{ username }}/de-project-sprint-9.git`
-3. Перейдите в директорию с проектом: 
-	* `cd de-project-sprint-9`
-4. Выполните проект и сохраните получившийся код в локальном репозитории:
-	* `git add .`
-	* `git commit -m 'my best commit'`
-5. Обновите репозиторий в вашем GitHub-аккаунте:
-	* `git push origin main`
+После успешной аутентификации в кластере склонируйте репозиторий этого чарта к себе на компьютер.
+
+В файле `app/values.yaml` измените значения переменных. Укажите ссылку на реджистри, созданного в Yandex Cloud и версию образа:
+
+```yaml
+image:
+  repository: "адрес образа в формате cr.yandex/<registry id>/<repo name>"
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "версия образа в реджистри"
+```
+
+Установите Helm-чарт:
+
+```shell
+helm upgrade --install --atomic test app
+```
+
+## Настройка реджистри Yandex Cloud
+
+Для разрешения возможности пуллинга образов из вашего реджисти, настройте политику доступа. Нужно выдать роль `container-registry.images.puller` на ваш реестр для системной группы allUsers.
+
+В настройках реджистри нажмите "Назначить роли" в правом верхнем углу и выберите группу "All Users":
+
+<img src="img/regisry_all_users.png" alt="Contact Point" width="512"/>
+
+Назначте этой группе роль `container-registry.images.puller`:
+
+<img src="img/regisry_role.png" alt="Contact Point" width="512"/>

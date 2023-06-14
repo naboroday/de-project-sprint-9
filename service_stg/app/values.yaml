@@ -1,0 +1,36 @@
+# Default values for app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  # Link to your container registry. You will launch it in Yandex Cloud.
+  repository: cr.yandex/crpji0p80olpi5ui6ara/stg_service_container
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v2022-11-21-r1"
+
+containerPort: 5000
+
+config:
+  EXAMPLE_ENV1: "value_1"
+  EXAMPLE_ANOTHER_ENV2: "value_2"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
